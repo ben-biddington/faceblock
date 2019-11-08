@@ -16,7 +16,7 @@ try
 
     console.log(application);
 
-    application.start([...document.querySelectorAll("img")]);
+    application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src')}) ));
 }
 catch(e) 
 {

@@ -1,55 +1,58 @@
-const expect = require('chai').expect;
+const { MockFunction } = require('../support');
 
-// Returns list of blocked urls
-const block = (disallowed, list) => {
-    const matchesAny = text => disallowed.map(it => it.replace(/\s/g, '_')).some(d => text.match(new RegExp(`${d}`, 'i')));
+const Application = require('../../core/application').Application;
 
-    return list.filter(matchesAny);
-};
-
-describe('filtering blocked names', () => {
+describe('blocking images', () => {
     it('works like this', () => {
         const disallowed = [ 'Sonny_Bill_Williams' ];
-
-        const urls = [ 
-            '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187',
-            '/assets/news/213783/eight_col_edited_zara_on_trampoline.jpg?1572993075'
+        
+        const images = [ 
+            { src: '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187'},
+            { src: '/assets/news/213783/eight_col_edited_zara_on_trampoline.jpg?1572993075'}
         ]
 
-        const blocked = block(disallowed, urls);
+        const application = new Application({}, disallowed);
 
-        expect(blocked).to.eql([ 
-            '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187',
-        ]);
+        const mock = new MockFunction();
+
+        application.onBlocking(mock.fun());
+        
+        application.start(images);
+
+        mock.mustHaveBeenCalledWith(
+            {
+                images: [ { src: '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187'} ] 
+            }
+        );
     });
 
-    it('ignores case', () => {
-        const disallowed = [ 'sonny_bill_williams' ];
+    it('detects underscores, hyphens and plusses', () => {
+        const disallowed = [ 'Sonny Bill Williams', 'Nadia Lim', 'John Key' ];
 
-        const urls = [ 
-            '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187',
-            '/assets/news/213783/eight_col_edited_zara_on_trampoline.jpg?1572993075'
+        const images = [ 
+            { src: '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187'},
+            { src: '/assets/news/213783/eight_col_edited_zara_on_trampoline.jpg?1572993075'},
+            { src: '/assets/news/213783/john+key.jpg?1572993075'},
+            { src: '/assets/news/213783/nadia-lim.jpg?1572993075'},
         ]
 
-        const blocked = block(disallowed, urls);
+        const application = new Application({}, disallowed);
 
-        expect(blocked).to.eql([ 
-            '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187',
-        ]);
-    });
+        const mock = new MockFunction();
 
-    it('puts_in_underscores', () => {
-        const disallowed = [ 'Sonny Bill Williams' ];
+        application.onBlocking(mock.fun());
+        
+        application.start(images);
 
-        const urls = [ 
-            '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187',
-            '/assets/news/213783/eight_col_edited_zara_on_trampoline.jpg?1572993075'
-        ]
-
-        const blocked = block(disallowed, urls);
-
-        expect(blocked).to.eql([ 
-            '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187',
-        ]);
+        mock.mustHaveBeenCalledWith(
+            {
+                images: 
+                [ 
+                    { src: '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187' } ,
+                    { src: '/assets/news/213783/john+key.jpg?1572993075' },
+                    { src: '/assets/news/213783/nadia-lim.jpg?1572993075' },
+                ] 
+            }
+        );
     });
 });

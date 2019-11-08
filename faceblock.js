@@ -14,7 +14,17 @@ try
       { log: console.log }, 
       [ 'Luxon', 'Andy Foster', 'Sonny Bill Williams', 'Jo Young', 'zara_on_trampoline', 'Bono' ]);
 
-  console.log(application);
+  application.onBlocking(e => {
+    const allImagesonPage = [...document.querySelectorAll("img")];
+
+    e.images.forEach(toBlock => {
+      const elements = allImagesonPage.filter(it => it.getAttribute('src') === toBlock.src);
+      elements.forEach(it => {
+        it.setAttribute('alt', 'blocked by faceblock');
+        it.setAttribute('src', '');
+      });
+    });
+  });
 
   application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src')}) ));
 }

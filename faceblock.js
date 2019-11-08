@@ -10,15 +10,15 @@
 
 try 
 {
-    const application = new core.Application(
-        { log: console.log }, 
-        [ 'Luxon', 'Andy Foster', 'Sonny Bill Williams', 'Jo Young', 'zara_on_trampoline', 'Bono' ]);
+  const application = new core.Application(
+      { log: console.log }, 
+      [ 'Luxon', 'Andy Foster', 'Sonny Bill Williams', 'Jo Young', 'zara_on_trampoline', 'Bono' ]);
 
-    console.log(application);
+  console.log(application);
 
-    application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src')}) ));
+  application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src')}) ));
 }
 catch(e) 
 {
-    console.log(e);
+  console.log(e);
 }

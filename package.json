@@ -5,6 +5,7 @@
   "main": "faceblock.js",
   "dependencies": {},
   "devDependencies": {
+    "chai": "^4.2.0",
     "mocha": "^6.2.2"
   },
   "scripts": {

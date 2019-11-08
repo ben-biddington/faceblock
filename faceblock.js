@@ -15,7 +15,7 @@ const init = () => {
     console.log(`Faceblock loaded, current page has <${allImages.length}> images.`);
     console.log(`List: ${allImages.map(it => it.getAttribute('src')).join('\n')}`);
 
-    const people = [ 'Luxon', 'Andy Foster' ];
+    const people = [ 'Luxon', 'Andy Foster', 'Sonny Bill Williams' ];
 }
 
 try 

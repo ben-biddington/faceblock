@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 
+// Returns list of blocked urls
 const block = (disallowed, list) => {
     const matchesAny = text => disallowed.map(it => it.replace(/\s/g, '_')).some(d => text.match(new RegExp(`${d}`, 'i')));
 

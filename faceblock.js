@@ -7,6 +7,22 @@
   -> Load Temporary Add-on...
 
  */
-const allImages = document.querySelectorAll("img");
 
-console.log(`Faceblock loaded, current page has <${allImages.length}> images`);
+const init = () => {
+    const allImages = [...document.querySelectorAll("img")];
+
+    console.log(`Faceblock loaded, current page has <${allImages.length}> images.`);
+    console.log(`Faceblock loaded, current page has <${allImages.length}> images.`);
+    console.log(`List: ${allImages.map(it => it.getAttribute('src')).join('\n')}`);
+
+    const people = [ 'Luxon', 'Andy Foster' ];
+}
+
+try 
+{
+    init();
+}
+catch(e) 
+{
+    console.log(e);
+}

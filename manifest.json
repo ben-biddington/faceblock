@@ -1,0 +1,18 @@
+{
+    "description": "Block images of people with punchable faces",
+    "manifest_version": 2,
+    "name": "Faceblock",
+    "version": "1.0",
+    "homepage_url": "http://www.google.com",
+    "icons": {
+      "48": "icons/rose-diamond.ico"
+    },
+  
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["faceblock.js"]
+      }
+    ]
+  }
+  

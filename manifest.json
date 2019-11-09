@@ -11,7 +11,7 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": [ "build/dist/faceblock.core.bundle.js", "adapters/web/faceblock.js" ], "_": "import order matters!"
+        "js": [ "build/dist/faceblock.core.bundle.js", "adapters/web/faceblock.js" ]
       }
     ],
 
@@ -25,7 +25,14 @@
     },
 
     "permissions": [
-      "activeTab"
-    ]
+      "activeTab",
+      "storage"
+    ],
+
+    "applications": {
+      "gecko": {
+        "strict_min_version": "50.0"
+      }
+    }
   }
   

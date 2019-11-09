@@ -1,32 +1,35 @@
 function get() 
 {
-  return browser.storage.local.get().
-  then(results => results.names || []).
-  then(result => {
-    status(`Returning: ${result.length}`);  
-    return result;
-  });
+  return browser.storage.local.get('names').
+    catch(e => status(`GET-FAILED: ${e}`)).
+    then(result => result.names || []).
+    then(result => {
+      status(`GET: ${JSON.stringify(result)}`);  
+      
+      return result
+    });
 }
 
-function set(newNames = []) 
+// [i] https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/StorageArea/set
+function set(next = []) 
 {
-  var next = { names: newNames };
+  status(`SET: ${JSON.stringify(next)}`);
 
-  status(next);
-
-  return browser.storage.local.set(next);
+  return browser.storage.local.set({ names: next }).
+    then(() => status("OK")).
+    catch(e => status(`SET-FAILED: ${e}`));
 }
 
 function status(m) {
-  document.querySelector("#log").innerText = m;
+  document.querySelector("#log").innerText = `${m}\n`;
 }
 
 function addNew() {
-  var newName = document.querySelector('#n').value || 'abc';
+  const newName = document.querySelector('#n').value || 'abc';
   
   return get().
-    then((existingNames) => set([ ...existingNames, newName ])).
-    then(()              => showCurrent());
+    then(existingNames => set([ ...existingNames, newName ])).
+    then(()            => showCurrent());
 }
 
 function remove(name) {
@@ -41,11 +44,11 @@ function showCurrent() {
   var list = document.createElement('ul');
 
   return get().then(results => {
-    status(`showing <${results.length}> results`);
     results.forEach(r => {
-      var deleteButton = document.createElement('button');
+      var deleteButton = document.createElement('a');
       deleteButton.innerText = 'x';
-      deleteButton.addEventListener('click', remove(r));
+      deleteButton.setAttribute('href', '');
+      deleteButton.addEventListener('click', () => remove(r));
       
       var text = document.createElement('span');
       text.setAttribute('style', 'margin-left: 2px');
@@ -58,12 +61,20 @@ function showCurrent() {
       list.appendChild(li);
     });
 
+    while (settings.firstChild) {
+      settings.removeChild(settings.firstChild);
+    }
+
     settings.appendChild(list);
   });
 }
 
-var addButton = document.querySelector('#add');
-addButton.addEventListener('click', addNew);
+document.querySelector('#add').addEventListener('click', addNew);
+document.querySelector('#n').addEventListener('keypress', e => {
+  if (e.which == 13 || e.keycode == 13) {
+    addNew();
+  }
+});
 
 try 
 {

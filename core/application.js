@@ -20,6 +20,7 @@ class Application {
     _block(disallowed, list) {
         const all = this._flatten(
             [ 
+                disallowed,
                 disallowed.map(it => it.replace(/\s/g, '_')), 
                 disallowed.map(it => it.replace(/\s/g, '-')), 
                 disallowed.map(it => it.replace(/\s/g, '+')), 
@@ -28,7 +29,9 @@ class Application {
         
         const regexEscape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
-        const matchesAny = img => all.some(d => img.src.match(new RegExp(`${regexEscape(d)}`, 'i')));
+        const matchesAny = img => all.some(d => {
+          return img.src.match(new RegExp(`${regexEscape(d)}`, 'i')) || (img['alt'] || '').match(new RegExp(`${regexEscape(d)}`, 'i'))
+        });
     
         return list.filter(matchesAny);
     };

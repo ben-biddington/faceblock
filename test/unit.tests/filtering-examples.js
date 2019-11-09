@@ -55,4 +55,33 @@ describe('blocking images', () => {
             }
         );
     });
+
+    it('Checks alt text, too', () => {
+      const disallowed = [ 'Boris Johnson' ];
+
+      const images = [ 
+          { src: '/assets/news/164347/eight_col_Sonny_Bill_Williams_training.jpg?1536800187' } ,
+          { 
+            src: '/assets/news/213783/brexit-chaos.jpg',
+            alt: 'Boris Johnson blows it'
+          }
+      ]
+
+      const application = new Application({}, disallowed);
+
+      const mock = new MockFunction();
+
+      application.onBlocking(mock.fun());
+      
+      application.start(images);
+
+      mock.mustHaveBeenCalledWith(
+          {
+              images: 
+              [ 
+                  { src: '/assets/news/213783/brexit-chaos.jpg', alt: 'Boris Johnson blows it' } ,
+              ] 
+          }
+      );
+    });
 });

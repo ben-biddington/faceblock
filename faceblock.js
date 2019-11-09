@@ -26,7 +26,7 @@ try
     });
   });
 
-  application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src')}) ));
+  application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src'), alt: image.getAttribute('alt')}) ));
 }
 catch(e) 
 {

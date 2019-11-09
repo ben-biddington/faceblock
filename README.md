@@ -6,10 +6,16 @@
 ./build.sh
 ```
 
+### Install first
+
+```
+./build.sh -install
+```
+
 ## Test
 
 ```
-./test
+./test.sh
 ```
 
 ## Install

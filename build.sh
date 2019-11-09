@@ -1,5 +1,7 @@
 #!/bin/bash
 
-npm install
+if [[ "$*" =~ "-install" ]]; then
+  npm install
+fi
 
 webpack --display-minimal --config ./build/core.webpack.config.js

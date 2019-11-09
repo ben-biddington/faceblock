@@ -11,7 +11,10 @@ function addNew() {
   var newName = document.querySelector('#n').value || 'abc';
 
   return get().
-    then(existingNames => browser.storage.local.set({ names: [...existingNames, newName] })).
+    then(existingNames => {
+      console.log(`Existing: ${existingNames}`);
+      return browser.storage.local.set({ names: [...existingNames, newName] });
+    }).
     then(() => status(`Added <${newName}>`));
 }
 

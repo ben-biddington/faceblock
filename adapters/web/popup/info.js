@@ -1,23 +1,12 @@
 function get() 
 {
-  return browser.storage.local.get('names').
-    catch(e => status(`GET-FAILED: ${e}`)).
-    then(result => result.names || []).
-    then(result => {
-      status(`GET: ${JSON.stringify(result)}`);  
-      
-      return result
-    });
+  return getNames();
 }
 
 // [i] https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/StorageArea/set
 function set(next = []) 
 {
-  status(`SET: ${JSON.stringify(next)}`);
-
-  return browser.storage.local.set({ names: next }).
-    then(() => status("OK")).
-    catch(e => status(`SET-FAILED: ${e}`));
+  return saveNames(next);
 }
 
 function status(m) {
@@ -25,17 +14,15 @@ function status(m) {
 }
 
 function addNew() {
-  const newName = document.querySelector('#n').value || 'abc';
+  const newName = document.querySelector('#n').value;
   
-  return get().
-    then(existingNames => set([ ...existingNames, newName ])).
-    then(()            => showCurrent());
+  return addName(newName).
+    then(showCurrent).
+    then(() => document.querySelector('#n').value = null);
 }
 
 function remove(name) {
-  return get().
-    then(existingNames => set(existingNames.filter(it => it != name))).
-    then(() => showCurrent());
+  return removeName(name).then(() => showCurrent());
 }
 
 function showCurrent() {

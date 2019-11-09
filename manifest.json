@@ -1,7 +1,7 @@
 {
     "description": "Block images of people with punchable faces",
     "manifest_version": 2,
-    "name": "Faceblock",
+    "name": "faceblock",
     "version": "1.0",
     "homepage_url": "http://www.google.com",
     "icons": {
@@ -11,7 +11,7 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["build/dist/faceblock.core.bundle.js", "faceblock.js"]
+        "js": [ "adapters/web/faceblock.js", "build/dist/faceblock.core.bundle.js" ]
       }
     ],
 

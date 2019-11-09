@@ -20,7 +20,12 @@
         "19": "icons/rose-diamond.ico",
         "38": "icons/rose-diamond.ico"
       },
-      "default_title": ""
-    }
+      "default_title": "",
+      "default_popup": "adapters/web/popup/info.html"
+    },
+
+    "permissions": [
+      "activeTab"
+    ]
   }
   

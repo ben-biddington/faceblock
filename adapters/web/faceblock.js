@@ -10,23 +10,29 @@
 
 try 
 {
-  const application = new core.Application(
-      { log: console.log }, 
-      [ 'Luxon', 'Andy Foster', 'Jo Young', 'zara_on_trampoline', 'Bono', 'Maggie Barry', 'Donald Trump', 'Trump' ]);
+  getNames().then(blockList => {
 
-  application.onBlocking(e => {
-    const allImagesonPage = [...document.querySelectorAll("img")];
+    console.log(`Using blocklist: ${blockList}`);
 
-    e.images.forEach(toBlock => {
-      const elements = allImagesonPage.filter(it => it.getAttribute('src') === toBlock.src);
-      elements.forEach(it => {
-        it.setAttribute('alt', 'blocked by faceblock');
-        it.setAttribute('src', '');
+    const application = new core.Application(
+        { log: console.log }, 
+        blockList);
+  
+    application.onBlocking(e => {
+      const allImagesonPage = [...document.querySelectorAll("img")];
+  
+      e.images.forEach(toBlock => {
+        const elements = allImagesonPage.filter(it => it.getAttribute('src') === toBlock.src);
+        elements.forEach(it => {
+          it.setAttribute('alt', 'blocked by faceblock');
+          it.setAttribute('src', '');
+        });
       });
     });
-  });
+  
+    application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src'), alt: image.getAttribute('alt')}) ));
 
-  application.start([...document.querySelectorAll("img")].map(image => ({ src: image.getAttribute('src'), alt: image.getAttribute('alt')}) ));
+  }); 
 }
 catch(e) 
 {

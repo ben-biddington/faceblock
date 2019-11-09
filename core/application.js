@@ -30,7 +30,7 @@ class Application {
         const regexEscape = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
         const matchesAny = img => all.some(d => {
-          return img.src.match(new RegExp(`${regexEscape(d)}`, 'i')) || (img['alt'] || '').match(new RegExp(`${regexEscape(d)}`, 'i'))
+          return img.src.match(new RegExp(`${regexEscape(d)}`, 'i')) || (img.alt || '').match(new RegExp(`${regexEscape(d)}`, 'i'))
         });
     
         return list.filter(matchesAny);

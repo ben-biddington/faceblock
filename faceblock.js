@@ -12,7 +12,7 @@ try
 {
   const application = new core.Application(
       { log: console.log }, 
-      [ 'Luxon', 'Andy Foster', 'Sonny Bill Williams', 'Jo Young', 'zara_on_trampoline', 'Bono' ]);
+      [ 'Luxon', 'Andy Foster', 'Jo Young', 'zara_on_trampoline', 'Bono', 'Maggie Barry', 'Donald Trump', 'Trump' ]);
 
   application.onBlocking(e => {
     const allImagesonPage = [...document.querySelectorAll("img")];

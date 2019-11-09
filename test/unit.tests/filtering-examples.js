@@ -84,4 +84,24 @@ describe('blocking images', () => {
           }
       );
     });
+
+    it('Ignores missing \'src\' or \'alt\'', () => {
+      const disallowed = [ 'Boris Johnson' ];
+
+      const images = [ { title: 'image ismissing alt and src attributes' } ]
+
+      const application = new Application({}, disallowed);
+
+      const mock = new MockFunction();
+
+      application.onBlocking(mock.fun());
+      
+      application.start(images);
+
+      mock.mustHaveBeenCalledWith(
+          {
+              images: [ ] 
+          }
+      );
+    });
 });

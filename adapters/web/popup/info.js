@@ -39,7 +39,7 @@ function showCurrent() {
       
       var text = document.createElement('span');
       text.setAttribute('style', 'margin-left: 2px');
-      text.innerText = escape(r);
+      text.innerText = r;
 
       var li = document.createElement('li');
       li.appendChild(deleteButton);

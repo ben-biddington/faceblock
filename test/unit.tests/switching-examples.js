@@ -16,7 +16,7 @@ describe('Switching off', () => {
 
         mock.mustHaveBeenCalledWith(
           {
-              images: [ ] 
+            images: [ ]
           }
       );
     });

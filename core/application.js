@@ -1,5 +1,23 @@
 const events = require('events');
 
+class BlockableImage {
+  constructor(imageElement) {
+    this._imageElement = imageElement;
+    this._originalSrc = this._imageElement.getAttribute('src');
+    this._originalAlt = this._imageElement.getAttribute('alt');
+  }
+
+  block() {
+    this._imageElement.setAttribute('alt', 'blocked by faceblock');
+    this._imageElement.setAttribute('src', '');
+  }
+
+  unblock() {
+    this._imageElement.setAttribute('alt', this._originalAlt);
+    this._imageElement.setAttribute('src', this._originalSrc);
+  }
+}
+
 class Application {
     constructor(ports = {}, people=[]) {
         this._log       = ports.log || (_ => {});
@@ -15,6 +33,10 @@ class Application {
         this._log(`Found the following <${blockable.length}> possible blocks:\n\n${blockable.map(it => it.src).join('\n')}`);
 
         this._events.emit('blocking', { images: blockable });
+    }
+
+    switchOff() {
+      this._events.emit('blocking', { images: [] });
     }
 
     _block(disallowed, list) {
@@ -41,11 +63,11 @@ class Application {
     };
 
     _flatten(arrays = []) {
-        return [].concat.apply([], arrays);
+      return [].concat.apply([], arrays);
     }
 
     onBlocking(handler) {
-        this._events.on('blocking', handler);
+      this._events.on('blocking', handler);
     }
 }
 

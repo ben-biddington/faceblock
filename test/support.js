@@ -12,8 +12,12 @@ class MockFunction {
     }
   }
 
-  mustHaveBeenCalledWith(expected = {}) {
+  mustHaveBeenCalled() {
     expect(this._calls).to.not.be.empty;
+  }
+
+  mustHaveBeenCalledWith(expected = {}) {
+    this.mustHaveBeenCalled();
     
     expect(this._calls[0]).to.eql(expected, 
       `Expected:\n\n${JSON.stringify(expected, null, 2)}\n\nGot:\n\n${JSON.stringify(this._calls[0], null, 2)}`);
